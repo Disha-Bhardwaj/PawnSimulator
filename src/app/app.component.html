@@ -1,0 +1,157 @@
+<div class="buttons" style="display: flex">
+  <div class="chessboard">
+    <!-- 8th row -->
+    <div class="black" id="07"></div>
+    <div class="white" id="17"></div>
+    <div class="black" id="27"></div>
+    <div class="white" id="37"></div>
+    <div class="black" id="47"></div>
+    <div class="white" id="57"></div>
+    <div class="black" id="67"></div>
+    <div class="white" id="77"></div>
+    <!-- 7th row -->
+    <div class="white" id="06"></div>
+    <div class="black" id="16"></div>
+    <div class="white" id="26"></div>
+    <div class="black" id="36"></div>
+    <div class="white" id="46"></div>
+    <div class="black" id="56"></div>
+    <div class="white" id="66"></div>
+    <div class="black" id="76"></div>
+    <!-- 6th row -->
+    <div class="black" id="05"></div>
+    <div class="white" id="15"></div>
+    <div class="black" id="25"></div>
+    <div class="white" id="35"></div>
+    <div class="black" id="45"></div>
+    <div class="white" id="55"></div>
+    <div class="black" id="65"></div>
+    <div class="white" id="75"></div>
+    <!-- 5th row -->
+    <div class="white" id="04"></div>
+    <div class="black" id="14"></div>
+    <div class="white" id="24"></div>
+    <div class="black" id="34"></div>
+    <div class="white" id="44"></div>
+    <div class="black" id="54"></div>
+    <div class="white" id="64"></div>
+    <div class="black" id="74"></div>
+    <!-- 4th row -->
+    <div class="black" id="03"></div>
+    <div class="white" id="13"></div>
+    <div class="black" id="23"></div>
+    <div class="white" id="33"></div>
+    <div class="black" id="43"></div>
+    <div class="white" id="53"></div>
+    <div class="black" id="63"></div>
+    <div class="white" id="73"></div>
+    <!-- 3rd row -->
+    <div class="white" id="02"></div>
+    <div class="black" id="12"></div>
+    <div class="white" id="22"></div>
+    <div class="black" id="32"></div>
+    <div class="white" id="42"></div>
+    <div class="black" id="52"></div>
+    <div class="white" id="62"></div>
+    <div class="black" id="72"></div>
+    <!-- 2nd row -->
+    <div class="black" id="01"></div>
+    <div class="white" id="11"></div>
+    <div class="black" id="21"></div>
+    <div class="white" id="31"></div>
+    <div class="black" id="41"></div>
+    <div class="white" id="51"></div>
+    <div class="black" id="61"></div>
+    <div class="white" id="71"></div>
+    <!-- 1st row -->
+    <div class="white" id="00"></div>
+    <div class="black" id="10"></div>
+    <div class="white" id="20"></div>
+    <div class="black" id="30"></div>
+    <div class="white" id="40"></div>
+    <div class="black" id="50"></div>
+    <div class="white" id="60"></div>
+    <div class="black" id="70"></div>
+  </div>
+
+  <!-- Buttons for User Inputs -->
+  <button data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="showModal('Place')">Place</button>
+  <div *ngIf="!first">
+    <button *ngIf="initialMove" data-bs-toggle="modal" data-bs-target="#exampleModal"
+      (click)="showModal('Move')">Move</button>
+    <button *ngIf="!initialMove" (click)="moveFun()">Move</button>
+    <button (click)="changeDirection('left')">Left</button>
+    <button (click)="changeDirection('right')">Right</button>
+    <button (click)="reportFun()">Report</button>
+  </div>
+</div>
+
+<!-- to get the value of Place and move from the user -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 *ngIf="modalShow == 'Place'" class="modal-title" id="exampleModalLabel">Place the pawn</h5>
+        <h5 *ngIf="modalShow == 'Move'" class="modal-title" id="exampleModalLabel">Move the pawn</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" *ngIf="modalShow == 'Place'">
+        <!--for getting direct placement of pawn -->
+        <form [formGroup]="placeForm">
+          <label>PLACE</label>
+          <select formControlName="placeX">
+            <option value=''>X</option>
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+          </select>
+          <select formControlName="placeY">
+            <option value=''>Y</option>
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+          </select>
+          <select formControlName="placeF">
+            <option value=''>F</option>
+            <option value="0">NORTH</option>
+            <option value="90">EAST</option>
+            <option value="180">SOUTH</option>
+            <option value="270">WEST</option>
+          </select>
+          <select formControlName="placeC">
+            <option value=''>C</option>
+            <option value="BLACK">BLACK</option>
+            <option value="WHITE">WHITE</option>
+          </select>
+        </form>
+      </div>
+      <div class="modal-body" *ngIf="modalShow == 'Move'">
+        <!-- for getting first movement of pawn -->
+        <form [formGroup]="moveForm">
+          <label>MOVE</label>
+          <select formControlName="moveX">
+            <option value=''>MOVE</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+          </select>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" *ngIf="modalShow == 'Place'" class="btn btn-primary" (click)="placeFun()"
+          data-bs-dismiss="modal" aria-label="Close">Place</button>
+        <button type="button" *ngIf="modalShow == 'Move'" class="btn btn-primary" (click)="moveFun()"
+          data-bs-dismiss="modal" aria-label="Close">Move</button>
+      </div>
+    </div>
+  </div>
+</div>
